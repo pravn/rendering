@@ -1,0 +1,40 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+SET(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_VERBOSE_MAKEFILE TRUE)
+
+FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(GLUT REQUIRED)
+FIND_PACKAGE(GLEW REQUIRED)
+FIND_PACKAGE(PNG REQUIRED)
+
+INCLUDE_DIRECTORIES(
+  ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+  ${PNG_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/texture
+  )
+
+ADD_EXECUTABLE(cube cube.cpp shader_utils.cpp cube_func.cpp 
+  #loadTextureFromPng 
+#		main.cpp loadTextureFromPng.cpp 
+		)
+
+TARGET_LINK_LIBRARIES(cube
+  ${CMAKE_BINARY_DIR}/libfreeimage.a
+  ${OPENGL_LIBRARIES}
+  ${GLUT_LIBRARIES}
+  ${GLEW_LIBRARY}
+  ${PNG_LIBRARIES}
+
+)
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+file(COPY "${CMAKE_SOURCE_DIR}/cube.v.glsl" DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/cube.f.glsl" DESTINATION "${CMAKE_BINARY_DIR}")
+#Remnant from attempt to render to texture - ignore for now (but leave as is for future use)
+#file(COPY "${CMAKE_SOURCE_DIR}/texture/2.png" DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/libfreeimage.a" DESTINATION "${CMAKE_BINARY_DIR}")
+file(COPY "${CMAKE_SOURCE_DIR}/a.mtl" DESTINATION "${CMAKE_BINARY_DIR}")
+
+
